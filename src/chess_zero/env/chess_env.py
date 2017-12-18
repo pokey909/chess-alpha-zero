@@ -1,5 +1,6 @@
 import enum
 import chess.pgn
+import chess.variant
 import numpy as np
 
 from logging import getLogger
@@ -19,7 +20,7 @@ class ChessEnv:
         self.resigned = False
 
     def reset(self):
-        self.board = chess.Board()
+        self.board = chess.variant.HordeBoard()
         self.turn = 0
         self.done = False
         self.winner = None

@@ -2,7 +2,7 @@ from logging import getLogger
 
 import chess
 from chess_zero.config import Config, PlayWithHumanConfig
-from chess_zero.play_game.game_model import PlayWithHuman
+from chess_zero.play_game.game_model import PlayWithEngine
 from chess_zero.env.chess_env import ChessEnv
 from random import random
 
@@ -11,7 +11,7 @@ logger = getLogger(__name__)
 
 def start(config: Config):
     PlayWithHumanConfig().update_play_config(config.play)
-    chess_model = PlayWithHuman(config)
+    chess_model = PlayWithEngine(config)
 
     env = ChessEnv().reset()
     human_is_black = random() < 0.5
@@ -19,7 +19,7 @@ def start(config: Config):
 
     while not env.done:
         if (env.board.turn == chess.BLACK) == human_is_black:
-            action = chess_model.move_by_human(env)
+            action = chess_model.move_by_opponent(env)
             print("You move to: " + action)
         else:
             action = chess_model.move_by_ai(env)
