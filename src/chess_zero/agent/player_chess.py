@@ -266,10 +266,15 @@ class ChessPlayer:
         xx_ = max(xx_, 1)  # avoid u_=0 if N is all 0
         p_ = self.var_p[key]
 
-        if is_root_node:  # Is it correct?? -> (1-e)p + e*Dir(0.03)
+        if is_root_node:  # Is it correct?? -> (1-e)p + e*Dir(alpha)
             p_ = (1 - self.play_config.noise_eps) * p_ + \
                  self.play_config.noise_eps * np.random.dirichlet([self.play_config.dirichlet_alpha] * self.labels_n)
 
+        # re-normalize
+        p_ = p_ * legal_labels
+        if np.sum(p_) > 0:
+             p_ = p_ / np.sum(p_)
+                
         u_ = self.play_config.c_puct * p_ * xx_ / (1 + self.var_n[key])
         if env.board.turn == chess.WHITE:
             v_ = (self.var_q[key] + u_ + 1000) * legal_labels
