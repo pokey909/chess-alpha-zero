@@ -8,6 +8,7 @@ class EvaluateConfig:
         self.play_config.change_tau_turn = 0
         self.play_config.noise_eps = 0
         self.evaluate_latest_first = True
+        self.c_puct = 1.5
 
 
 class PlayDataConfig:
